@@ -3,10 +3,8 @@ import database from "infra/database.js";
 async function status(request, response) {
   const updatedAt = new Date().toISOString();
 
-  var dbVersion = await database.query(
-    "SELECT setting FROM pg_settings WHERE name='server_version';",
-  );
-  dbVersion = Number(dbVersion.rows[0].setting);
+  var dbVersion = await database.query("SHOW server_version;");
+  dbVersion = dbVersion.rows[0].server_version;
 
   var maxConnections = await database.query(
     "SELECT setting FROM pg_settings WHERE name='max_connections';",
